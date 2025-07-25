@@ -2072,15 +2072,6 @@ static Void build_main_view () {
         ui_scroll_box("box2_4") {
             ui_tag("hbox");
             ui_tag("item");
-
-            ui_style_rule("#Foo12") {
-                ui_style_f32(UI_FLOAT_X, 0);
-                ui_style_f32(UI_FLOAT_Y, 0);
-                ui_style_vec4(UI_BG_COLOR, hsva2rgba(vec4(.4, .4, 1, .8f)));
-                ui_style_vec4(UI_BG_COLOR2, hsva2rgba(vec4(.4, .4, .6, .8f)));
-            }
-
-            ui_button("Foo12");
             for (U64 i = 0; i < cast(U64, 10*n); ++i) ui_button_fmt("Foo_%i", i);
         }
 
