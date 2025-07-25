@@ -822,7 +822,7 @@ static Void ui_init (Mem *mem, Mem *frame_mem) {
     map_init(&ui->box_cache, mem);
     map_init(&ui->pressed_keys, mem);
     array_push_lit(&ui->clip_stack, .w=win_width, .h=win_height);
-    ui->glyph_cache = glyph_cache_new(mem, 64);
+    ui->glyph_cache = glyph_cache_new(mem, 64, 16);
 }
 
 static UiKey ui_build_key (String string) {

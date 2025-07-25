@@ -175,11 +175,11 @@ static Void font_init (GlyphCache *cache, Font *font, String font_binary) {
     hb_font_set_scale(font->hb_font, hb_font_size, hb_font_size);
 }
 
-GlyphCache *glyph_cache_new (Mem *mem, U16 atlas_size) {
+GlyphCache *glyph_cache_new (Mem *mem, U16 atlas_size, U32 font_size) {
     Auto cache = mem_new(mem, GlyphCache);
     cache->mem = mem;
     cache->dpr = 1;
-    cache->font_size = 18;
+    cache->font_size = font_size;
     cache->atlas_size = atlas_size;
     cache->atlas_slot_size = cache->font_size * cache->dpr * 2;
     cache->slots = mem_alloc(mem, GlyphSlot, .size=(atlas_size * atlas_size * sizeof(GlyphSlot)));

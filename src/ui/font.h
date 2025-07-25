@@ -65,7 +65,7 @@ istruct (GlyphCache) {
 array_typedef(Font, Font);
 array_typedef(GlyphInfo, GlyphInfo);
 
-GlyphCache    *glyph_cache_new     (Mem *, U16 atlas_size);
+GlyphCache    *glyph_cache_new     (Mem *, U16 atlas_size, U32 font_size);
 Void           glyph_cache_destroy (GlyphCache *);
 GlyphSlot     *glyph_cache_get     (GlyphCache *, GlyphInfo *);
 SliceGlyphInfo get_glyph_infos     (GlyphCache *, Mem *, String);
