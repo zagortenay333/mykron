@@ -1,3 +1,5 @@
+![preview](./data/screenshots.png)
+
 A toy gui application done for the purpose of studying immediate mode graphics UI's.
 
 It's implemented on top of openGl and glfw.
