@@ -1,5 +1,7 @@
 A toy gui application done for the purpose of studying immediate mode graphics UI's.
 
+It's implemented on top of openGl and glfw.
+
 There is support for:
 
     - A fairly comprehensive layout system.
