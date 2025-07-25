@@ -1313,10 +1313,11 @@ static Void ui_tag         (CString tag)             { return ui_tag_box_str(arr
 static Void compute_standalone_sizes (U64 axis) {
     array_iter (box, &ui->depth_first) {
         Auto size = &box->style.size.v[axis];
+
         if (size->tag == UI_SIZE_PIXELS) {
             box->rect.size[axis] = size->value;
         } else if (size->tag == UI_SIZE_TEXT) {
-            box->rect.size[axis] = box->text_rect.size[axis];
+            box->rect.size[axis] = box->text_rect.size[axis] + 2*box->style.padding.v[axis];
         }
     }
 }
@@ -2153,6 +2154,11 @@ static Bool show_modal () {
                 ui_style_f32(UI_ANIMATION_TIME, 1);
                 ui_style_f32(UI_BLUR_RADIUS, 2);
                 ui_style_u32(UI_ANIMATION, UI_MASK_BG_COLOR);
+
+                ui_style_rule(".button") {
+                    ui_style_size(UI_WIDTH, (UiSize){UI_SIZE_TEXT, 0, 0});
+                    ui_style_vec2(UI_PADDING, vec2(4, 4));
+                }
 
                 ui_button("modal_button");
             }
