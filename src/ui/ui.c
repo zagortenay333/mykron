@@ -562,6 +562,7 @@ ienum (UiStyleAttribute, U32) {
     UI_AXIS,
     UI_BG_COLOR,
     UI_BG_COLOR2,
+    UI_TEXT_COLOR,
     UI_RADIUS,
     UI_PADDING,
     UI_SPACING,
@@ -591,6 +592,7 @@ fenum (UiStyleMask, U32) {
     UI_MASK_AXIS                = 1 << UI_AXIS,
     UI_MASK_BG_COLOR            = 1 << UI_BG_COLOR,
     UI_MASK_BG_COLOR2           = 1 << UI_BG_COLOR2,
+    UI_MASK_TEXT_COLOR          = 1 << UI_TEXT_COLOR,
     UI_MASK_RADIUS              = 1 << UI_RADIUS,
     UI_MASK_PADDING             = 1 << UI_PADDING,
     UI_MASK_SPACING             = 1 << UI_SPACING,
@@ -618,6 +620,7 @@ istruct (UiStyle) {
     UiAxis axis;
     Vec4 bg_color;
     Vec4 bg_color2; // If x = -1, no gradient.
+    Vec4 text_color;
     Vec4 radius;
     Vec2 padding;
     F32  spacing;
@@ -745,6 +748,7 @@ UiStyle default_box_style = {
     .size.width     = {UI_SIZE_CHILDREN_SUM, 0, 0},
     .size.height    = {UI_SIZE_CHILDREN_SUM, 0, 0},
     .bg_color2      = {-1},
+    .text_color     = {1, 1, 1, .8},
     .edge_softness  = 1.0,
     .floating[0]    = NAN,
     .floating[1]    = NAN,
@@ -964,6 +968,7 @@ static Void animate_style (UiBox *box) {
     X(size, UI_MASK_HEIGHT, size.height);
     X(vec4, UI_MASK_BG_COLOR, bg_color);
     X(vec4, UI_MASK_BG_COLOR2, bg_color2);
+    X(vec4, UI_MASK_TEXT_COLOR, text_color);
     X(vec4, UI_MASK_RADIUS, radius);
     X(vec2, UI_MASK_PADDING, padding);
     X(f32, UI_MASK_SPACING, spacing);
@@ -1142,6 +1147,7 @@ static Void ui_style_box_vec4 (UiBox *box, UiStyleAttribute attr, Vec4 val) {
     switch (attr) {
     case UI_BG_COLOR:            s->bg_color = val; break;
     case UI_BG_COLOR2:           s->bg_color2 = val; break;
+    case UI_TEXT_COLOR:          s->text_color = val; break;
     case UI_RADIUS:              s->radius = val; break;
     case UI_BORDER_COLOR:        s->border_color = val; break;
     case UI_BORDER_WIDTHS:       s->border_widths = val; break;
@@ -1202,6 +1208,7 @@ static Void apply_style_rule (UiBox *box, UiStyleRule *rule, UiSpecificity *spec
     if (rule_applies(rule, s, specs, UI_AXIS))                { box->next_style.axis = rule->style->axis; specs[UI_AXIS] = s; }
     if (rule_applies(rule, s, specs, UI_BG_COLOR))            { box->next_style.bg_color = rule->style->bg_color; specs[UI_BG_COLOR] = s; }
     if (rule_applies(rule, s, specs, UI_BG_COLOR2))           { box->next_style.bg_color2 = rule->style->bg_color2; specs[UI_BG_COLOR2] = s; }
+    if (rule_applies(rule, s, specs, UI_TEXT_COLOR))          { box->next_style.text_color = rule->style->text_color; specs[UI_TEXT_COLOR] = s; }
     if (rule_applies(rule, s, specs, UI_RADIUS))              { box->next_style.radius = rule->style->radius; specs[UI_RADIUS] = s; }
     if (rule_applies(rule, s, specs, UI_PADDING))             { box->next_style.padding = rule->style->padding; specs[UI_PADDING] = s; }
     if (rule_applies(rule, s, specs, UI_SPACING))             { box->next_style.spacing = rule->style->spacing; specs[UI_SPACING] = s; }
@@ -1619,7 +1626,7 @@ static Void render_box (UiBox *box) {
     if (box->flags & UI_BOX_DRAW_TEXT) {
         F32 x = floor(box->rect.x + box->rect.w/2 - box->text_rect.w/2);
         F32 y = floor(box->rect.y + box->rect.h/2 + box->text_rect.h/2);
-        render_text(box->label, vec4(1, 1, 1, 1), x, y, &box->text_rect);
+        render_text(box->label, box->style.text_color, x, y, &box->text_rect);
     }
 
     if (box->flags & UI_BOX_CLIPPING) {
