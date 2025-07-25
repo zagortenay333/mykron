@@ -1,3 +1,17 @@
+// =============================================================================
+// @todo
+//
+// - We do not signal to the caller that a glyph got evicted from
+//   the atlas. If the caller is batching render calls, they might
+//   hold a glyph to be rendered so long in the batch that it gets
+//   evicted before being rendered.
+//
+// - The font size is set just once when calling glyph_cache_new().
+//   One solution is to index into the glyph cache using font size
+//   as well. Then we would internally maintain multiple atlases,
+//   one for a certain range of font sizes.
+// =============================================================================
+
 #include "vendor/glad/glad.h"
 #include <freetype/freetype.h>
 #include <freetype/ftmodapi.h>
